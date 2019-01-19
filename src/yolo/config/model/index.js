@@ -1,4 +1,5 @@
-const modelsPath = "/src/yolo/config/model/";
+const modelsPath = "https://raw.githubusercontent.com/CristianAbrante/YOLO-in-browser/master/src/yolo/config/model/";
+const modelFile = "model.json";
 
 /**
  * Models path are exported because tf.loadModel
@@ -7,9 +8,9 @@ const modelsPath = "/src/yolo/config/model/";
  */
 export default {
   tiny: {
-    v1: modelsPath + "v1_tiny.json",
-    v2: modelsPath + "v2_tiny.json",
-    v3: modelsPath + "v3_tiny.json"
+    v1: modelsPath + "v1-tiny/" + modelFile,
+    v2: modelsPath + "v2-tiny/" + modelFile,
+    v3: modelsPath + "v3-tiny/" + modelFile,
   },
-  v3: modelsPath + "v3.json"
+  v3: modelsPath + "v3/" + modelFile
 }
