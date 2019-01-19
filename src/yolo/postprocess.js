@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
-import { v3_masks } from "./config";
+import { v3_masks } from "./config/anchors/";
 
 async function postprocess(
     version,
@@ -8,7 +8,6 @@ async function postprocess(
     numClasses,
     classNames,
     imageShape,
-    // maxBoxesPerClass,
     maxBoxes,
     scoreThreshold,
     iouThreshold
@@ -23,14 +22,9 @@ async function postprocess(
   const _classes = tf.argMax(boxScores, -1);
   const _boxScores = tf.max(boxScores, -1);
 
-  // const splitBoxScores = boxScores.split(numClasses, 1);
-
-  // for (let i = 0; i < numClasses; i++) {
-  //   const _boxScores = splitBoxScores[i].as1D();
   const nmsIndex = await tf.image.nonMaxSuppressionAsync(
       boxes,
       _boxScores,
-      // maxBoxesPerClass,
       maxBoxes,
       iouThreshold,
       scoreThreshold
@@ -40,7 +34,6 @@ async function postprocess(
     tf.tidy(() => {
       const classBoxes = tf.gather(boxes, nmsIndex);
       const classBoxScores = tf.gather(_boxScores, nmsIndex);
-      // const classes = tf.mul(tf.onesLike(classBoxScores), i);
 
       classBoxes.split(nmsIndex.size).map(box => {
         boxes_.push(box.dataSync());
@@ -48,20 +41,14 @@ async function postprocess(
       classBoxScores.dataSync().map(score => {
         scores_.push(score);
       });
-      // classes.dataSync().map(cls => {
-      //   classes_.push(cls);
-      // });
       classes_ = _classes.gather(nmsIndex).dataSync();
     });
   }
   _boxScores.dispose();
   _classes.dispose();
   nmsIndex.dispose();
-  // }
-
   boxes.dispose();
   boxScores.dispose();
-  // tf.dispose(splitBoxScores);
 
   return boxes_.map((box, i) => {
     const top = Math.max(0, box[0]);
