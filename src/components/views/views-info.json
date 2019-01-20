@@ -1,0 +1,10 @@
+{
+  "image": {
+    "name": "image_view",
+    "icon": "camera_at"
+  },
+  "video": {
+    "name": "video_view",
+    "icon": "camera_roll"
+  }
+}
