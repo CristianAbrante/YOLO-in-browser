@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import Yolo from './yolo/yolo';
 import CanvasManipulator from './image/CanvasManipulator';
+import ModelSelector from './components/model-selector/ModelSelector';
+import theme from './components/theme';
+
+import {MuiThemeProvider} from '@material-ui/core/styles';
 
 class App extends Component {
   yolo;
@@ -22,74 +25,14 @@ class App extends Component {
     this.canvasManipulator = new CanvasManipulator(this.canvasRef.current);
   }
 
-  loadModel = () => {
-    console.log('loading model...');
-    this.yolo = new Yolo(this.state.model);
-    this.yolo.loadModel().then(
-        () => {
-          console.log('¡model ' + this.state.model + ' loaded!');
-        }
-    )
-  };
-
-  loadImage = () => {
-    let input = this.inputRef.current;
-    let canvas = this.canvasRef.current;
-    let image, fr, file;
-
-    function createImage() {
-      image = new Image();
-      image.onload = imageLoaded;
-      image.src = fr.result;
-    }
-    
-    let imageLoaded = () => {
-      this.yolo.predict(image).then(
-          boxes => {
-            this.canvasManipulator.drawBoxes(image, boxes);
-          }
-      )
-    };
-
-    if (!input.files) {
-      throw new Error('Your browser does not support file loader.');
-    } else {
-      file = input.files[0];
-      fr = new FileReader();
-      fr.onload = createImage;
-      fr.readAsDataURL(file);
-    }
-  };
-
-  static isAnImage(file) {
-    return file.type.includes('image');
-  }
-
-  static drawBoxes(ctx, boxes) {
-    boxes.map(boundingBox => {
-      ctx.beginPath();
-      ctx.lineWidth = "6";
-      ctx.strokeStyle = "red";
-      ctx.rect(boundingBox.left, boundingBox.top, boundingBox.width, boundingBox.height);
-      ctx.stroke();
-    });
-  }
-
   render() {
     return (
-      <div>
-        <input
-            ref={this.inputRef}
-            type="file"
-            onChange={this.loadImage}/>
-        <canvas ref={this.canvasRef}>
-          Canvas unsupported
-        </canvas>
-        <input
-            type="button"
-            value="load model"
-            onClick={this.loadModel}/>
-      </div>
+        <MuiThemeProvider theme={theme}>
+          <div>
+            <ModelSelector
+                yolo={this.yolo}/>
+          </div>
+        </MuiThemeProvider>
     );
   }
 }
