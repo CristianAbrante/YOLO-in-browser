@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Yolo from './yolo/yolo';
+import CanvasManipulator from './image/CanvasManipulator';
 
 class App extends Component {
   yolo;
   inputRef;
   canvasRef;
+  canvasManipulator;
 
   state = {
     model: 'v3tiny',
@@ -14,6 +16,10 @@ class App extends Component {
     super(props);
     this.inputRef = React.createRef();
     this.canvasRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.canvasManipulator = new CanvasManipulator(this.canvasRef.current);
   }
 
   loadModel = () => {
@@ -38,14 +44,9 @@ class App extends Component {
     }
     
     let imageLoaded = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      let ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0);
       this.yolo.predict(image).then(
-          blocks => {
-            console.log(blocks);
-            App.drawBoxes(ctx, blocks);
+          boxes => {
+            this.canvasManipulator.drawBoxes(image, boxes);
           }
       )
     };
