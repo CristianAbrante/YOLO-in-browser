@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 
 import './index.css';
 import ImageCarousel from './ImageCarousel';
+import ImageManager from './../../../image/ImageManager';
+import CanvasManager from './../../../image/CanvasManipulator';
 
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core';
+import CanvasManipulator from '../../../image/CanvasManipulator';
 
 function importAll(r) {
   let images = [];
@@ -47,30 +50,40 @@ const styles = {
 
 class ImageView extends Component {
   canvasRef;
+  inputRef;
   currentSampleImage;
+  canvasManager;
+  imageManager;
 
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
+    this.inputRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.canvasManager = new CanvasManager(this.canvasRef.current);
+    this.imageManager = new ImageManager();
   }
 
   setCurrentSampleImage = index => {
     this.currentSampleImage = images[index];
   };
 
-  uploadSampleImage = (imgSrc) => {
-    let canvas = this.canvasRef.current;
+  uploadSampleImage = () => {
+    this.imageManager.loadImage(
+        this.currentSampleImage,
+        image => {
+          this.canvasManager.drawImage(image);
+        });
+  };
 
-    let imageLoaded = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      let ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0);
-    };
-
-    let image = new Image();
-    image.onload = imageLoaded;
-    image.src = this.currentSampleImage;
+  uploadInputImage = () => {
+    this.imageManager.loadImageFromInput(
+        this.inputRef.current,
+        image => {
+          this.canvasManager.drawImage(image);
+        });
   };
 
   render() {
@@ -93,9 +106,15 @@ class ImageView extends Component {
             <Fab
                 className={classes.button}
                 variant='extended'
-                color='secondary'>
+                color='secondary'
+                onClick={() => {this.inputRef.current.click()}}>
               Upload custom
             </Fab>
+            <input
+                ref={this.inputRef}
+                style={{"display" : "none"}}
+                onChange={this.uploadInputImage}
+                type="file"/>
           </Paper>
           <Paper className={classes.carousel}>
             <ImageCarousel
