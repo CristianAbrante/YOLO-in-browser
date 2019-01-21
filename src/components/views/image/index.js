@@ -7,6 +7,13 @@ import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core';
 
+function importAll(r) {
+  let images = [];
+  r.keys().map(item => { images.push(r(item)); });
+  return images;
+}
+const images = importAll(require.context('./../../../yolo/test/images', false, /\.(png|jpe?g|svg)$/));
+
 const styles = {
   container: {
     padding: 10,
@@ -28,8 +35,9 @@ const styles = {
   },
   canvasContainer: {
     display: 'flex',
-    width: '100%',
+    width: '99vw',
     background: 'grey',
+    overflow: 'auto'
   },
   canvas: {
     margin: 'auto',
@@ -38,12 +46,39 @@ const styles = {
 };
 
 class ImageView extends Component {
+  canvasRef;
+  currentSampleImage;
+
+  constructor(props) {
+    super(props);
+    this.canvasRef = React.createRef();
+  }
+
+  setCurrentSampleImage = index => {
+    this.currentSampleImage = images[index];
+  };
+
+  uploadSampleImage = (imgSrc) => {
+    let canvas = this.canvasRef.current;
+
+    let imageLoaded = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0);
+    };
+
+    let image = new Image();
+    image.onload = imageLoaded;
+    image.src = this.currentSampleImage;
+  };
+
   render() {
     let {classes} = this.props;
     return (
         <div className={"container " + classes.container}>
           <Paper className={classes.canvasContainer}>
-            <canvas className={classes.canvas}>
+            <canvas ref={this.canvasRef} className={classes.canvas}>
               Your browser does not support canvas
             </canvas>
           </Paper>
@@ -51,7 +86,8 @@ class ImageView extends Component {
             <Fab
                 className={classes.button}
                 variant='extended'
-                color='secondary'>
+                color='secondary'
+                onClick={this.uploadSampleImage}>
               Upload Sample
             </Fab>
             <Fab
@@ -62,7 +98,9 @@ class ImageView extends Component {
             </Fab>
           </Paper>
           <Paper className={classes.carousel}>
-            <ImageCarousel/>
+            <ImageCarousel
+                sampleImages={images}
+                setCurrentSampleImage={this.setCurrentSampleImage}/>
           </Paper>
         </div>
     );

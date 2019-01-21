@@ -6,14 +6,6 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import {withStyles} from '@material-ui/core';
 
-
-function importAll(r) {
-  let images = [];
-  r.keys().map(item => { images.push(r(item)); });
-  return images;
-}
-const images = importAll(require.context('./../../../yolo/test/images', false, /\.(png|jpe?g|svg)$/));
-
 const styles = {
   root: {
     margin: 0,
@@ -41,19 +33,27 @@ class ImageCarousel extends Component{
     activeStep: 0,
   };
 
+  componentDidMount() {
+    this.props.setCurrentSampleImage(this.state.activeStep);
+  }
+
   handleNext = () => {
+    this.props.setCurrentSampleImage(this.state.activeStep + 1);
     this.setState({activeStep: this.state.activeStep + 1});
   };
 
   handleBack = () => {
+    this.props.setCurrentSampleImage(this.state.activeStep - 1);
     this.setState({activeStep: this.state.activeStep - 1});
   };
 
   handleStepChange = (step) => {
+    this.props.setCurrentSampleImage(step);
     this.setState({activeStep: step});
   };
 
   render() {
+    let images = this.props.sampleImages;
     let {classes} = this.props;
     let maxSteps = images.length;
     return(
@@ -62,7 +62,7 @@ class ImageCarousel extends Component{
               index={this.state.activeStep}
               onChangeIndex={this.handleStepChange}
               enableMouseEvents>
-            {images.map((image, index) => (
+            {images.map(image => (
                 <div key={image} >
                   <img className={classes.img} src={image} alt=""/>
                 </div>
