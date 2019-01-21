@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import theme from './components/theme';
 import NavigationBar from './components/navigation-bar/NavigationBar';
 import ViewsManager from './components/views/ViewsManager'
+import ModelSelector from './components/model-selector/ModelSelector';
 
 // Material UI imports
 import {MuiThemeProvider} from '@material-ui/core/styles';
