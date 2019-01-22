@@ -60,6 +60,7 @@ class ImageView extends Component {
   state = {
     predictionHasBeenMade: false,
     lastBoxes: undefined,
+    lastImage: undefined,
   };
 
   constructor(props) {
@@ -100,6 +101,7 @@ class ImageView extends Component {
           this.setState({
             predictionHasBeenMade: true,
             lastBoxes: boxes,
+            lastImage: image,
           })
         }
     )
@@ -150,6 +152,11 @@ class ImageView extends Component {
     this.setState({predictionHasBeenMade: false});
   };
 
+  setSelectedBox = (index) => {
+    let {lastImage, lastBoxes} = this.state;
+    this.canvasManager.drawBoxes(lastImage, lastBoxes, index);
+  };
+
   render() {
     let {classes} = this.props;
     return (
@@ -165,7 +172,8 @@ class ImageView extends Component {
               this.state.predictionHasBeenMade ?
                   <ResultVisualizer
                     model={this.props.model}
-                    boxes={this.state.lastBoxes}/> :
+                    boxes={this.state.lastBoxes}
+                    onBoxSelected={this.setSelectedBox}/> :
                   <ImageCarousel
                       sampleImages={images}
                       setCurrentSampleImage={this.setCurrentSampleImage}/>

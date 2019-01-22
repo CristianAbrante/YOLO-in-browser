@@ -40,7 +40,8 @@ class ClassCard extends Component {
     let {classes, box} = this.props;
     return (
         <Card className={classes.root}>
-          <CardActionArea>
+          <CardActionArea
+            onClick={() => {this.props.onBoxSelected(this.props.index)}}>
             <CardContent className={classes.container}>
               <div style={{display: 'flex'}}>
                 <img style={{margin: 'auto'}} src={icons[box.class.replace(' ', '-')]} alt=""/>

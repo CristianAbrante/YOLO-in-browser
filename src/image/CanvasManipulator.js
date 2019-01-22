@@ -1,6 +1,8 @@
+import Theme from './../components/theme';
 
 export default class CanvasManipulator {
-  static BOX_COLOR = 'red';
+  static BOX_COLOR = Theme.palette.secondary.dark;
+  static SELECTED_BOX_COLOR = Theme.palette.primary.dark;
   static BOX_WIDTH = '6';
   canvas;
 
@@ -8,15 +10,22 @@ export default class CanvasManipulator {
     this.setCanvas(canvas);
   }
 
-  drawBoxes(image, boxes) {
+  drawBoxes(image, boxes, selectedIndex) {
     this.drawImage(image);
     let ctx = this.canvas.getContext('2d');
 
     ctx.beginPath();
     ctx.lineWidth = CanvasManipulator.BOX_WIDTH;
     ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
-    boxes.map(box => {
-      ctx.strokeRect(box.left, box.top, box.width, box.height);
+    boxes.map((box, index) => {
+      if (selectedIndex !== undefined
+          && selectedIndex === index) {
+        ctx.strokeStyle = CanvasManipulator.SELECTED_BOX_COLOR;
+        ctx.strokeRect(box.left, box.top, box.width, box.height);
+        ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
+      } else {
+        ctx.strokeRect(box.left, box.top, box.width, box.height);
+      }
     });
     ctx.stroke();
   }

@@ -54,8 +54,12 @@ class ResultVisualizer extends Component {
           </div>
         </Paper>
         <Paper className={classes.box}>
-          {this.props.boxes.map(box => {
-            return <ClassCard key={box.class + box.score} box={box}/>
+          {this.props.boxes.map((box, index) => {
+            return <ClassCard
+                key={box.class + index}
+                index={index}
+                box={box}
+                onBoxSelected={this.props.onBoxSelected}/>
           })}
         </Paper>
       </div>
