@@ -43,7 +43,7 @@ class ClassCard extends Component {
           <CardActionArea>
             <CardContent className={classes.container}>
               <div style={{display: 'flex'}}>
-                <img style={{margin: 'auto'}} src={icons[box.class.replace(' ', '')]} alt=""/>
+                <img style={{margin: 'auto'}} src={icons[box.class.replace(' ', '-')]} alt=""/>
               </div>
               <Typography align='center' gutterBottom variant="h5" component="h2">
                 {box.class}

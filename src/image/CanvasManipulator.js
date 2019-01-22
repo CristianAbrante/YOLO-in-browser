@@ -32,4 +32,9 @@ export default class CanvasManipulator {
     if (canvas !== undefined)
       this.canvas = canvas;
   }
+
+  refreshCanvas() {
+    this.canvas.width = 0;
+    this.canvas.height = 0;
+  }
 }

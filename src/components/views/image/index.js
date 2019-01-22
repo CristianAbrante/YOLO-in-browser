@@ -6,6 +6,7 @@ import ImageManager from './../../../image/ImageManager';
 import CanvasManager from './../../../image/CanvasManipulator';
 import ResultVisualizer from './ResultVisualizer';
 
+import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core';
@@ -104,15 +105,10 @@ class ImageView extends Component {
     )
   };
 
-  render() {
+  renderControllers = () => {
     let {classes} = this.props;
-    return (
-        <div className={"container " + classes.container}>
-          <Paper className={classes.canvasContainer}>
-            <canvas ref={this.canvasRef} className={classes.canvas}>
-              Your browser does not support canvas
-            </canvas>
-          </Paper>
+    if (!this.state.predictionHasBeenMade) {
+      return(
           <Paper className={classes.buttonsContainer}>
             <Fab
                 className={classes.button}
@@ -134,6 +130,36 @@ class ImageView extends Component {
                 onChange={this.uploadInputImage}
                 type="file"/>
           </Paper>
+      )
+    } else {
+      return(
+          <Paper className={classes.buttonsContainer}>
+            <Fab
+                className={classes.button}
+                color='secondary'
+                onClick={this.backwardPressed}>
+              <Icon>arrow_back</Icon>
+            </Fab>
+          </Paper>
+      )
+    }
+  };
+
+  backwardPressed = () => {
+    this.canvasManager.refreshCanvas();
+    this.setState({predictionHasBeenMade: false});
+  };
+
+  render() {
+    let {classes} = this.props;
+    return (
+        <div className={"container " + classes.container}>
+          <Paper className={classes.canvasContainer}>
+            <canvas ref={this.canvasRef} className={classes.canvas}>
+              Your browser does not support canvas
+            </canvas>
+          </Paper>
+          {this.renderControllers()}
           <Paper className={classes.carousel}>
             {
               this.state.predictionHasBeenMade ?
