@@ -8,10 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 
-const CARDS = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-];
-
 const styles = {
   root: {
     height: '100%',
@@ -21,7 +17,6 @@ const styles = {
   },
   box: {
     width: '70%',
-    height: '100%',
     overflow: 'auto',
     display: 'flex',
     flexWrap: 'wrap',
@@ -42,25 +37,25 @@ const styles = {
 
 class ResultVisualizer extends Component {
   render() {
-    let {classes} = this.props;
+    let {classes, boxes, model} = this.props;
     return(
       <div className={classes.root}>
         <Paper className={classes.info}>
           <Typography variant='h2' className={classes.title}>
-            yolo
+            Yolo
           </Typography>
             <Divider/>
           <Typography variant='h6' className={classes.title}>
-            v3Tiny
+            {model.config.name}
           </Typography>
           <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Chip label={"time: "} color='secondary' style={{margin: '10px'}} />
-            <Chip label={"Recognized classes: "} color='secondary' />
+            <Chip label={"Recognized classes: " + boxes.length} color='secondary' />
           </div>
         </Paper>
         <Paper className={classes.box}>
-          {CARDS.map(card => {
-            return <ClassCard/>
+          {this.props.boxes.map(box => {
+            return <ClassCard key={box.class + box.score} box={box}/>
           })}
         </Paper>
       </div>

@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-import Person from './../../../yolo/config/classes/icons/person.png';
-
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent/CardContent';
@@ -10,40 +8,52 @@ import Chip from '@material-ui/core/Chip';
 import {withStyles} from '@material-ui/core/';
 
 function importAll(r) {
-  let images = [];
-  r.keys().map(item => { images.push(r(item)); });
-  return images;
+  let icons = {};
+  r.keys().map(
+      item => {
+        let name = item.replace('./', '').replace('.png', '');
+        icons[name] = r(item);
+      });
+  return icons;
 }
-const images = require.context('./../../../yolo/config/classes/icons/', false, /\.(png|jpe?g|svg)$/).keys();
-console.log(images);
+const icons = importAll(require.context('./../../../yolo/config/classes/icons/', false, /\.(png|jpe?g|svg)$/));
 
 const styles = {
   root: {
-    margin: 6
+    margin: 6,
+    height: 242,
   },
   container: {
     display: 'flex',
     flexDirection: 'column',
-    jutifyContent: 'center'
+    jutifyContent: 'center',
+    maxWidth: '300px',
+  },
+  infoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
   }
 };
 
 class ClassCard extends Component {
   render() {
-    let {classes} = this.props;
+    let {classes, box} = this.props;
     return (
         <Card className={classes.root}>
           <CardActionArea>
             <CardContent className={classes.container}>
               <div style={{display: 'flex'}}>
-                <img style={{margin: 'auto'}} src={Person} alt=""/>
+                <img style={{margin: 'auto'}} src={icons[box.class.replace(' ', '')]} alt=""/>
               </div>
               <Typography align='center' gutterBottom variant="h5" component="h2">
-                Person
+                {box.class}
               </Typography>
-              <div>
-                <Chip label={"x: 1156" + " y: 3456"} color="primary"/>
-                <Chip label={"w: 234" + " h: 567"} color="primary"/>
+              <div className={classes.infoContainer}>
+                <Chip label={"accuracy: " + (Math.round(box.score * 1000) / 1000)} color="secondary"/>
+                <div style={{margin: 5}}>
+                  <Chip label={"x: " + Math.round(box.left) + " y: " + Math.round(box.top)} color="primary"/>
+                  <Chip label={"w: " + Math.round(box.width) + " h: " + Math.round(box.height)} color="primary"/>
+                </div>
               </div>
             </CardContent>
           </CardActionArea>
