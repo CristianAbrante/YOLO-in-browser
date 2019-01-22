@@ -56,15 +56,8 @@ class ModelSelector extends Component {
 
   loadModel = () => {
     this.setState({modelLoading: true});
-    let yolo = this.props.yolo;
-    console.log('loading model...');
-    yolo = new Yolo(this.getVersionName());
-    yolo.loadModel().then(
-      () => {
-        console.log('¡model ' + this.getVersionName()+ ' loaded!');
-        this.setState({dialogOpen: false});
-      }
-    )
+    this.props.onModelSelected(this.getVersionName(),
+        () => {this.setState({dialogOpen: false})});
   };
 
   renderSelector = () => {
