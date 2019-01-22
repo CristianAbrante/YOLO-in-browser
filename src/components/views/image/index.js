@@ -41,12 +41,11 @@ const styles = {
   canvasContainer: {
     display: 'flex',
     width: '99vw',
-    background: 'grey',
+    background: '#D1D7DE',
     overflow: 'auto'
   },
   canvas: {
     margin: 'auto',
-    background: 'white'
   }
 };
 
