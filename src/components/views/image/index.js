@@ -4,11 +4,11 @@ import './index.css';
 import ImageCarousel from './ImageCarousel';
 import ImageManager from './../../../image/ImageManager';
 import CanvasManager from './../../../image/CanvasManipulator';
+import ResultVisualizer from './ResultVisualizer';
 
 import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import {withStyles} from '@material-ui/core';
-import CanvasManipulator from '../../../image/CanvasManipulator';
 
 function importAll(r) {
   let images = [];
@@ -34,6 +34,7 @@ const styles = {
   },
   carousel: {
     margin: 'auto',
+    height: '100%',
     width: '100%'
   },
   canvasContainer: {
@@ -54,6 +55,10 @@ class ImageView extends Component {
   currentSampleImage;
   canvasManager;
   imageManager;
+
+  state = {
+    predictionHasBeenMade: true,
+  };
 
   constructor(props) {
     super(props);
@@ -117,9 +122,14 @@ class ImageView extends Component {
                 type="file"/>
           </Paper>
           <Paper className={classes.carousel}>
-            <ImageCarousel
-                sampleImages={images}
-                setCurrentSampleImage={this.setCurrentSampleImage}/>
+            {
+              this.state.predictionHasBeenMade ?
+                  <ResultVisualizer
+                    model={this.props.model}/> :
+                  <ImageCarousel
+                      sampleImages={images}
+                      setCurrentSampleImage={this.setCurrentSampleImage}/>
+            }
           </Paper>
         </div>
     );
