@@ -61,6 +61,7 @@ class ImageView extends Component {
     predictionHasBeenMade: false,
     lastBoxes: undefined,
     lastImage: undefined,
+    lastTime: 0,
   };
 
   constructor(props) {
@@ -95,13 +96,16 @@ class ImageView extends Component {
   };
 
   doPrediction = image => {
+    let t0 = performance.now();
     this.props.model.predict(image).then(
         boxes => {
           this.canvasManager.drawBoxes(image, boxes);
+         let t1 = performance.now();
           this.setState({
             predictionHasBeenMade: true,
             lastBoxes: boxes,
             lastImage: image,
+            lastTime: t1 - t0,
           })
         }
     )
@@ -173,6 +177,7 @@ class ImageView extends Component {
                   <ResultVisualizer
                     model={this.props.model}
                     boxes={this.state.lastBoxes}
+                    time={this.state.lastTime}
                     onBoxSelected={this.setSelectedBox}/> :
                   <ImageCarousel
                       sampleImages={images}

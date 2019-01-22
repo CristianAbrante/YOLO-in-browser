@@ -37,7 +37,7 @@ const styles = {
 
 class ResultVisualizer extends Component {
   render() {
-    let {classes, boxes, model} = this.props;
+    let {classes, boxes, model, time} = this.props;
     return(
       <div className={classes.root}>
         <Paper className={classes.info}>
@@ -49,7 +49,10 @@ class ResultVisualizer extends Component {
             {model.config.name}
           </Typography>
           <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <Chip label={"time: "} color='secondary' style={{margin: '10px'}} />
+            <Chip
+                label={"time: " + (Math.round(time * 10000) / 10000) + " ms"}
+                color='secondary'
+                style={{margin: '10px'}} />
             <Chip label={"Recognized classes: " + boxes.length} color='secondary' />
           </div>
         </Paper>
