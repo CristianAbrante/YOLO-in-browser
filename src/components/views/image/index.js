@@ -57,7 +57,8 @@ class ImageView extends Component {
   imageManager;
 
   state = {
-    predictionHasBeenMade: true,
+    predictionHasBeenMade: false,
+    lastBoxes: undefined,
   };
 
   constructor(props) {
@@ -79,7 +80,7 @@ class ImageView extends Component {
     this.imageManager.loadImage(
         this.currentSampleImage,
         image => {
-          this.canvasManager.drawImage(image);
+          this.doPrediction(image)
         });
   };
 
@@ -87,8 +88,20 @@ class ImageView extends Component {
     this.imageManager.loadImageFromInput(
         this.inputRef.current,
         image => {
-          this.canvasManager.drawImage(image);
+          this.doPrediction(image);
         });
+  };
+
+  doPrediction = image => {
+    this.props.model.predict(image).then(
+        boxes => {
+          this.canvasManager.drawBoxes(image, boxes);
+          this.setState({
+            predictionHasBeenMade: true,
+            lastBoxes: boxes,
+          })
+        }
+    )
   };
 
   render() {
@@ -125,7 +138,8 @@ class ImageView extends Component {
             {
               this.state.predictionHasBeenMade ?
                   <ResultVisualizer
-                    model={this.props.model}/> :
+                    model={this.props.model}
+                    boxes={this.state.lastBoxes}/> :
                   <ImageCarousel
                       sampleImages={images}
                       setCurrentSampleImage={this.setCurrentSampleImage}/>
