@@ -47,6 +47,28 @@ export default class Yolo {
     return boxes;
   }
 
+  async predictVideo(frame) {
+    let outputs = tf.tidy(() => {
+      let imageTensor = tf.fromPixels(frame, 3);
+      imageTensor = imageTensor.expandDims(0).toFloat().div(tf.scalar(255));
+      return this.model.predict(imageTensor);
+    });
+
+    const boxes = await postprocess(
+        this.config.name,
+        outputs,
+        this.config.anchors,
+        this.config.classes.length,
+        this.config.classes,
+        [Yolo.INPUT_SIZE, Yolo.INPUT_SIZE],
+        Yolo.MAX_BOXES,
+        Yolo.SCORE_THRESHOLD,
+        Yolo.IOU_THRESHOLD,
+    );
+    tf.dispose(outputs);
+    return boxes;
+  }
+
   static getModelConfig(versionName) {
     if (Config[versionName] === undefined)
       throw new Error('undefined model config: ' + versionName);

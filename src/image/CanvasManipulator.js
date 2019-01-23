@@ -5,6 +5,7 @@ export default class CanvasManipulator {
   static SELECTED_BOX_COLOR = Theme.palette.primary.dark;
   static BOX_WIDTH = '6';
   canvas;
+  ctx;
 
   constructor(canvas) {
     this.setCanvas(canvas);
@@ -12,34 +13,30 @@ export default class CanvasManipulator {
 
   drawBoxes(image, boxes, selectedIndex) {
     this.drawImage(image);
-    let ctx = this.canvas.getContext('2d');
 
-    ctx.beginPath();
-    ctx.lineWidth = CanvasManipulator.BOX_WIDTH;
-    ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
+    this.ctx.beginPath();
+    this.ctx.lineWidth = CanvasManipulator.BOX_WIDTH;
+    this.ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
     boxes.map((box, index) => {
       if (selectedIndex !== undefined
           && selectedIndex === index) {
-        ctx.strokeStyle = CanvasManipulator.SELECTED_BOX_COLOR;
-        ctx.strokeRect(box.left, box.top, box.width, box.height);
-        ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
+        this.ctx.strokeStyle = CanvasManipulator.SELECTED_BOX_COLOR;
+        this.ctx.strokeRect(box.left, box.top, box.width, box.height);
+        this.ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
       } else {
-        ctx.strokeRect(box.left, box.top, box.width, box.height);
+        this.ctx.strokeRect(box.left, box.top, box.width, box.height);
       }
     });
-    ctx.stroke();
+    this.ctx.stroke();
   }
 
   drawImage(image) {
-    this.canvas.width = image.width;
-    this.canvas.height = image.height;
-    let ctx = this.canvas.getContext('2d');
-    ctx.drawImage(image, 0, 0);
+    this.ctx.drawImage(image, 0, 0);
   }
 
   setCanvas(canvas) {
     if (canvas !== undefined)
-      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
   }
 
   refreshCanvas() {
