@@ -1,30 +1,30 @@
 import Theme from './../components/theme';
 
-export default class CanvasManipulator {
+export default class CanvasVideoManipulator {
   static BOX_COLOR = Theme.palette.secondary.dark;
-  ctx;
+  static BOX_WIDTH = 6;
+  canvas;
 
   constructor(canvas) {
-    this.setCanvas(canvas);
+    if (canvas !== undefined)
+      this.canvas = canvas;
   }
 
   drawBoxes(image, boxes) {
-    this.drawImage(image);
-    this.ctx.beginPath();
-    this.ctx.lineWidth = CanvasManipulator.BOX_WIDTH;
-    this.ctx.strokeStyle = CanvasManipulator.BOX_COLOR;
+    this.canvas.width = image.width;
+    this.canvas.height = image.height;
+    let ctx = this.canvas.getContext('2d');
+    ctx.putImageData(image, 0, 0);
+    
+    ctx.beginPath();
+    ctx.lineWidth = CanvasVideoManipulator.BOX_WIDTH;
+    ctx.strokeStyle = CanvasVideoManipulator.BOX_COLOR;
+    ctx.font = "30px Arial";
     boxes.map((box, index) => {
-      this.ctx.strokeRect(box.left, box.top, box.width, box.height);
+      ctx.strokeRect(box.left, box.top, box.width, box.height);
+      ctx.fillStyle = "white";
+      ctx.fillText(box.class, box.left, box.top);
     });
-    this.ctx.stroke();
-  }
-
-  drawImage(image) {
-    this.ctx.drawImage(image, 0, 0);
-  }
-
-  setCanvas(canvas) {
-    if (canvas !== undefined)
-      this.ctx = canvas.getContext('2d');
+    ctx.stroke();
   }
 }

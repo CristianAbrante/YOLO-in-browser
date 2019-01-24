@@ -47,7 +47,7 @@ export default class Yolo {
     return boxes;
   }
 
-  async predictVideo(frame) {
+  async predictVideo(frame, width, height) {
     let outputs = tf.tidy(() => {
       let imageTensor = tf.fromPixels(frame, 3);
       imageTensor = imageTensor.expandDims(0).toFloat().div(tf.scalar(255));
@@ -60,7 +60,7 @@ export default class Yolo {
         this.config.anchors,
         this.config.classes.length,
         this.config.classes,
-        [Yolo.INPUT_SIZE, Yolo.INPUT_SIZE],
+        [height, width],
         Yolo.MAX_BOXES,
         Yolo.SCORE_THRESHOLD,
         Yolo.IOU_THRESHOLD,

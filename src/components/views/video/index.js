@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 
-import VideoTest from '../../../yolo/test/video/v1.webm';
+import VideoTest from '../../../yolo/test/video/OUT.mp4';
 import CanvasManager from '../../../image/CanvasVideoManipulator';
 import Yolo from '../../../yolo/yolo';
 import VideoManipulator from '../../../video/VideoManipulator';
 
 class VideoView extends Component {
-  video;
   canvas;
-  ctx;
+  video;
   canvasManager;
   videoManipulator;
 
@@ -19,7 +18,6 @@ class VideoView extends Component {
   }
 
   componentDidMount() {
-    this.ctx = this.canvas.current.getContext('2d');
     this.canvasManager = new CanvasManager(this.canvas.current);
     this.videoManipulator = new VideoManipulator(this.video.current, this.props.model, this.canvasManager);
     this.video.current.play();
@@ -35,11 +33,9 @@ class VideoView extends Component {
 
   onVideoPaused = () => {
     if (!this.videoManipulator.videoHasBeenPreprocessed) {
-      console.log(this.videoManipulator.frames);
-      //this.videoManipulator.stopPreprocess();
       this.videoManipulator.processBoxes().then(
           () => {
-            console.log(this.videoManipulator.boxes);
+            console.log('Frames processed!');
             this.videoManipulator.stopPreprocess();
           }
       )
@@ -60,10 +56,11 @@ class VideoView extends Component {
                 controls
                 style={{display: 'none'}}
                 onPlay={this.onVideoPlayed}
-                onPause={this.onVideoPaused}/>
+                onPause={this.onVideoPaused}
+                muted/>
           </div>
           <div>
-            <canvas ref={this.canvas} width={Yolo.INPUT_SIZE} height={Yolo.INPUT_SIZE}></canvas>
+            <canvas ref={this.canvas}></canvas>
           </div>
           <button onClick={this.playProcessed}>Play processed</button>
         </div>
