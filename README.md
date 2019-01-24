@@ -22,3 +22,12 @@
            alt="website">
   </a>
 </p>
+
+<p align="center">
+  <a href="#authors">Authors</a>
+</p>
+
+## Authors
+
+* **Cristian Abrante Dorta** - [CristianAbrante](https://github.com/CristianAbrante)
+* **Alberto Jesús González Álvarez** - [AlberTJ97](https://github.com/AlberTJ97)
