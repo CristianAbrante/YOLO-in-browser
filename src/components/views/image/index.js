@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import './index.css';
 import ImageCarousel from './ImageCarousel';
 import ImageManager from './../../../image/ImageManager';
-import CanvasManager from './../../../image/CanvasManipulator';
+import CanvasManager from '../../../image/CanvasImageManipulator';
 import ResultVisualizer from './ResultVisualizer';
 
 import Icon from '@material-ui/core/Icon';

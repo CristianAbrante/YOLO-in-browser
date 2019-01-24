@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import VideoTest from '../../../yolo/test/video/v1.webm';
-import CanvasManager from '../../../image/CanvasManipulator';
+import CanvasManager from '../../../image/CanvasVideoManipulator';
 import Yolo from '../../../yolo/yolo';
 import VideoManipulator from '../../../video/VideoManipulator';
 
