@@ -27,6 +27,8 @@
   <a href="#authors">Authors</a>
 </p>
 
+![screenshot](images/screenshot.png)
+
 ## Authors
 
 * **Cristian Abrante Dorta** - [CristianAbrante](https://github.com/CristianAbrante)
