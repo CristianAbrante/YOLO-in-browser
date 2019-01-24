@@ -31,6 +31,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  canvas: {
+    margin: 'auto',
+  }
 };
 
 class VideoView extends Component {
@@ -72,6 +75,8 @@ class VideoView extends Component {
             this.setState({dialogOpen: false});
           }
       )
+    } else {
+      this.videoManipulator.boxesIndex = 0;
     }
   };
 
@@ -99,7 +104,7 @@ class VideoView extends Component {
 
           <div className={classes.container}>
             <Paper className={classes.canvasContainer}>
-              <canvas ref={this.canvas}>
+              <canvas ref={this.canvas} className={classes.canvas}>
                 Canvas not supported in your browser
               </canvas>
             </Paper>

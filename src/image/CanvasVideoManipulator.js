@@ -11,6 +11,9 @@ export default class CanvasVideoManipulator {
   }
 
   drawBoxes(image, boxes) {
+    if (image === undefined)
+      return;
+
     this.canvas.width = image.width;
     this.canvas.height = image.height;
     let ctx = this.canvas.getContext('2d');

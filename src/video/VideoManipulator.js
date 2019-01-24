@@ -1,7 +1,7 @@
 import Yolo from '../yolo/yolo';
 
 class VideoManipulator {
-  static REFRESH_RATE = 1000;
+  static REFRESH_RATE = 150;
   video;
   model;
   canvasVideoManager;
