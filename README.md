@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="logo/logo.png" alt="Yolo in Browser" width="500">
+  <img src="images/logo.png" alt="Yolo in Browser" width="500">
 </h1>
 
 <h4 align="center">
