@@ -24,10 +24,36 @@
 </p>
 
 <p align="center">
+  <a href="#description">Description</a> •
+  <a href="#usage">Usage</a> •
   <a href="#authors">Authors</a>
 </p>
 
 ![screenshot](images/screenshot.png)
+
+## Description
+The aim of this project is to implement an iterface for the
+YOLO (You Only Look Once) algorithm just in the browser.
+
+Yolo algoritm is an *state of the art* procedure based on
+convolutional neural networks for detecting the objets in
+an scene, focusing in **real time**.
+
+Implementation is done for acedemic purposes, for the subject
+intelligent systems at the Computer Engeneering course of
+La Laguna University ([ULL](www.ull.es)).
+
+## Usage
+
+We created a web application, build with React. We tested on
+Safari and Chrome and you can check it in this link:
+
+<h3 align="center">
+  <a href="https://cristianabrante.github.io/YOLO-in-browser/">
+    YOLO in Browser (hosted on Github Pages)
+  </a>
+</h3>
+
 
 ## Authors
 
